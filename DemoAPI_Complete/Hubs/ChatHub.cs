@@ -8,5 +8,17 @@ namespace DemoAPI_Complete.Hubs
         {
             await Clients.All.SendAsync("newMessage", user, message);
         }
+
+        public async Task JoinGroup(string groupname)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, groupname);
+
+            await SendToGroup(groupname, "System", $"L'utilisateur {Context.ConnectionId} vient de nous rejoindre");   
+        }
+
+        public async Task SendToGroup(string groupname, string user, string message)
+        {
+            await Clients.Group(groupname).SendAsync("fromGroup" + groupname, user, message);
+        }
     }
 }

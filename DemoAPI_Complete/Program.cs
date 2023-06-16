@@ -14,6 +14,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<GameHub>();
 
+builder.Services.AddCors(o => o.AddPolicy("angular", option => 
+            option.WithOrigins("http://localhost:4200")
+                    .AllowCredentials()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()));
+
 builder.Services.AddScoped<IGameRepository, GameService>(sp => 
     new GameService(
         new System.Data.SqlClient.SqlConnection(
@@ -28,7 +34,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+//app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors("angular");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
