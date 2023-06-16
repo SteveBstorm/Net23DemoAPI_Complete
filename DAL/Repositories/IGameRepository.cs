@@ -6,6 +6,6 @@ namespace DAL.Repositories
     {
         Task<IEnumerable<Game>> GetAll();
         Task<Game> GetById(int Id);
-        Task CreateGame(Game g);
+        void CreateGame(Game g);
     }
 }

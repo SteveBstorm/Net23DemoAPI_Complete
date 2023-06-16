@@ -1,5 +1,6 @@
 ﻿using DAL.Repositories;
 using DemoAPI_Complete.DTO;
+using DemoAPI_Complete.Hubs;
 using DemoAPI_Complete.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace DemoAPI_Complete.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameRepository gameService;
+        private readonly GameHub _gameHub;
 
-        public GameController(IGameRepository gameService)
+        public GameController(IGameRepository gameService, GameHub gameHub)
         {
             this.gameService = gameService;
+            _gameHub = gameHub;
         }
 
         [HttpGet]
@@ -35,7 +38,8 @@ namespace DemoAPI_Complete.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            await gameService.CreateGame(game.ToDal());
+            gameService.CreateGame(game.ToDal());
+            await _gameHub.NotifyNewGame();
             return Ok();
         }
     }

@@ -34,12 +34,12 @@ namespace DAL.Services
             return await connection.QueryFirstAsync<Game>(sql, param);
         }
 
-        public async Task CreateGame(Game g)
+        public void CreateGame(Game g)
         {
             string sql = "INSERT INTO Game (Title, Note, ReleaseYear, Genre)" +
                 " VALUES (@Title, @Note, @ReleaseYear, @Genre)";
 
-            await connection.ExecuteAsync(sql, g);
+            connection.Execute(sql, g);
         }
     }
 }

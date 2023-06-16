@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<GameHub>();
 
 builder.Services.AddScoped<IGameRepository, GameService>(sp => 
     new GameService(
@@ -32,6 +33,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.MapHub<ChatHub>("chathub");
+app.MapHub<GameHub>("gamehub");
 app.MapControllers();
 
 app.Run();
